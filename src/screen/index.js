@@ -5,6 +5,8 @@ import ProjectScreen from './ProjectScreen';
 import SkillScreen from './SkillScreen';
 import SearchScreen from './SearchScreen';
 import RegisterScreen from './RegisterScreen'
+import DetailScreen from './DetailScreen'
+
 export {
   AbouteMeScreen,
   AddProjectScreen,
@@ -13,4 +15,5 @@ export {
   SkillScreen,
   SearchScreen,
   RegisterScreen,
+  DetailScreen,
 };

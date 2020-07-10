@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, {Children} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import Badge from './Badge';
 
@@ -16,12 +16,14 @@ export default function TextC(props) {
     badgeTextColor = '#424242',
     children,
     numberOfLines,
+    selectable = false,
   } = props;
 
   let fontSize = size === 0 ? '' : {fontSize: size};
   return (
     <View style={styles.textContainer}>
       <Text
+        selectable={selectable}
         lineBreakMode={lineBreak}
         numberOfLines={numberOfLines}
         style={[{fontFamily: `Rubik-${weight}`, color}, fontSize, style]}>

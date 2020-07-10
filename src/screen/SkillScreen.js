@@ -17,20 +17,20 @@ import SkillTagList from '../components/SkillTagList';
 import gitApiData from '../data/githubApi.json';
 import {FlatList} from 'react-native-gesture-handler';
 
-export default function SkillScreen() {
+export default function SkillScreen(props) {
+  const {navigation} = props;
   const DEVICE = Dimensions.get('window');
   const [data, setData] = useState([]);
 
   async function getGithubRepo() {
     try {
       let RNG = Math.round(Math.random() * 50);
+      console.warn(RNG);
       let repos = await fetch(
-        `https://api.github.com/repositories?since=${RNG}`,
+        `https://api.github.com/repositories?since=${RNG.toString()}`,
       );
-      repos = await repos.json();
-      let languages = await fetch(repos.languages_url);
-      languages.languages = await languages.json();
-      setData(repos);
+      let data = await repos.json();
+      setData(data);
     } catch (err) {
       console.warn(err);
       setData(gitApiData); //offline data
@@ -40,6 +40,10 @@ export default function SkillScreen() {
   useEffect(() => {
     getGithubRepo();
   }, []);
+
+  const goToDetail = _id => {
+    navigation.push('detail', {_id});
+  };
 
   return (
     <FlatList
@@ -102,7 +106,9 @@ export default function SkillScreen() {
       ListHeaderComponentStyle={{height: DEVICE.height * 0.43}}
       ListFooterComponent={() => <View />}
       ListFooterComponentStyle={styles.listFooter}
-      renderItem={data => <ProjectPost data={data.item} />}
+      renderItem={data => (
+        <ProjectPost titleOnClick={goToDetail} data={data.item} />
+      )}
       keyExtractor={data => data.node_id}
     />
   );

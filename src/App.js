@@ -13,15 +13,16 @@ import {
   SearchScreen,
   SkillScreen,
   RegisterScreen,
+  DetailScreen,
 } from './screen/index';
 import {connect} from 'react-redux';
-import {checkAuth} from './actions/authAction';
 
 // * SCREEN
 const skillStack = createStackNavigator();
 const skillStackScreen = () => (
-  <skillStack.Navigator>
-    <skillStack.Screen name="landing" component={SkillScreen} />
+  <skillStack.Navigator initialRouteName="home" headerMode="none" >
+    <skillStack.Screen name="home" component={SkillScreen} />
+    <skillStack.Screen name="detail" component={DetailScreen} />
   </skillStack.Navigator>
 );
 
@@ -40,7 +41,11 @@ const TabScreen = () => (
     headerMode="none"
     tabBar={props => <TabBar {...props} />}
     initialRouteName="Home">
-    <Tab.Screen name="Home" component={SkillScreen} options={{icon: 'home'}} />
+    <Tab.Screen
+      name="Home"
+      component={skillStackScreen}
+      options={{icon: 'home'}}
+    />
     <Tab.Screen
       name="Search"
       component={SearchScreen}
@@ -65,8 +70,7 @@ const TabScreen = () => (
 );
 
 function App(props) {
-  const {isAuth, isAuthFunc} = props;
-  // isAuthFunc();
+  const {isAuth} = props;
   return (
     <NavigationContainer>
       {isAuth ? <TabScreen /> : <AuthStackScreen />}
@@ -78,7 +82,4 @@ const mapStateToProps = state => {
     isAuth: state.authReducer.isAuth,
   };
 };
-const mapDispatchToProps = () => ({
-  isAuthFunc: checkAuth,
-});
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
