@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {
   StyleSheet,
@@ -10,16 +10,26 @@ import {
 import Text from '../components/Text';
 import ImageLogo from '../components/ImageLogo';
 
-import {login} from '../actions/authAction';
+import {login, loginWithGoogle} from '../actions/authAction';
 
 export function LoginScreen(props) {
-  const {loginFunc, navigation, isAuth, isFailed} = props;
+  const {loginFunc, navigation, isFailed, loginGoogle} = props;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [usernameNull, setUsernameNull] = useState(true);
+  const [passwordNull, setPasswordNull] = useState(true);
 
   const onClick = (googleAuth = false) => {
-    loginFunc({username, password, googleAuth});
-    console.warn(isFailed);
+    if (googleAuth) {
+      loginGoogle();
+    } else if ((username !== '', password !== '')) {
+      setUsernameNull(true);
+      setPasswordNull(true);
+      loginFunc({username, password});
+    } else {
+      setUsernameNull(username !== '');
+      setPasswordNull(password !== '');
+    }
   };
 
   return (
@@ -40,11 +50,29 @@ export function LoginScreen(props) {
         <View style={styles.inputContainer}>
           <Text text="Username" style={styles.inputLabel} weight="Light" />
           <TextInput
-            style={[styles.textInput, isFailed ? {borderBottomColor: 'red'} : {},]}
+            style={styles.textInput}
             placeholder="Masukkan username"
             defaultValue={username}
             onChange={value => setUsername(value.nativeEvent.text)}
           />
+          <Text
+            size={11}
+            weight="Medium"
+            style={[
+              {display: isFailed ? 'flex' : 'none'},
+              styles.failedText,
+            ]}>
+            *Username atau password salah
+          </Text>
+          <Text
+            size={11}
+            weight="Medium"
+            style={[
+              {display: usernameNull ? 'none' : 'flex'},
+              styles.failedText,
+            ]}>
+            *Username harus di isi!
+          </Text>
         </View>
         <View style={styles.inputContainer}>
           <Text text="Password" style={styles.inputLabel} weight="Light" />
@@ -54,6 +82,15 @@ export function LoginScreen(props) {
             defaultValue={password}
             onChange={value => setPassword(value.nativeEvent.text)}
           />
+          <Text
+            size={11}
+            weight="Medium"
+            style={[
+              {display: passwordNull ? 'none' : 'flex'},
+              styles.failedText,
+            ]}>
+            *Password harus di isi!
+          </Text>
         </View>
         <TouchableOpacity
           style={styles.inputSubmit}
@@ -94,13 +131,13 @@ export function LoginScreen(props) {
 }
 const mapStateToProps = state => {
   return {
-    isAuth: state.authReducer.isAuth,
     isFailed: state.authReducer.loginFailed,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   loginFunc: data => dispatch(login(data)),
+  loginGoogle: () => dispatch(loginWithGoogle()),
 });
 
 export default connect(
@@ -168,5 +205,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
     marginBottom: 25,
+  },
+  failedText: {
+    color: 'red',
+    marginTop: 5,
   },
 });

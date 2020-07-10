@@ -1,4 +1,4 @@
-import {LOGIN, LOGOUT, REGISTER, CHECK_AUTH, LOGIN_FAILED} from './Types';
+import {LOGIN, LOGOUT, REGISTER, CHECK_AUTH, LOGIN_FAILED, LOGIN_WITH_GOOGLE} from './Types';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const login = payload => {
@@ -50,6 +50,10 @@ const registerSuccess = value => ({
     password: value.password,
     googleAuth: value.googleAuth,
   },
+});
+
+export const loginWithGoogle = () => ({
+  type: LOGIN_WITH_GOOGLE,
 });
 
 export const logout = () => ({

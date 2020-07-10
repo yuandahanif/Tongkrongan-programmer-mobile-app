@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,18 +9,41 @@ import {
 import Text from '../components/Text';
 import ImageLogo from '../components/ImageLogo';
 import {connect} from 'react-redux';
-import {register} from '../actions/authAction';
+import {register, loginWithGoogle} from '../actions/authAction';
 
 function RegisterScreen(props) {
-  const {registerFunc, username, password, email, navigation} = props;
-  const [usernameState, setUsername] = useState('');
-  const [passwordState, setPassword] = useState('');
-  const [emailState, setEmail] = useState('');
+  const {registerFunc, navigation, loginGoogle} = props;
+  const [username, setUsername] = useState('');
+  const [usernameNull, setUsernameNull] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordNull, setPasswordNull] = useState(false);
+  const [email, setEmail] = useState('');
+  const [emailNull, setEmailNull] = useState(false);
   const [password2, setPassword2] = useState('');
+  const [samePassword, setsamePassword] = useState(true);
 
   const onClick = (googleAuth = false) => {
-    registerFunc({username: usernameState,email: emailState,password: passwordState ,googleAuth});
+    if (googleAuth) {
+      loginGoogle();
+    } else if (username !== '' && samePassword && password !== '') {
+      registerFunc({
+        username,
+        email,
+        password,
+        googleAuth,
+      });
+      navigation.push('login');
+    } else {
+      setUsernameNull(username === '');
+      setEmailNull(email === '');
+      setPasswordNull(password === '');
+      setsamePassword(password2 !== '');
+    }
   };
+
+  useEffect(() => {
+    setsamePassword(password === password2);
+  }, [password2]);
 
   return (
     <View style={styles.container}>
@@ -42,26 +65,51 @@ function RegisterScreen(props) {
           <TextInput
             style={styles.textInput}
             placeholder="Masukkan username"
-            value={usernameState}
+            value={username}
             onChange={value => setUsername(value.nativeEvent.text)}
           />
+          <Text
+            size={11}
+            weight="Medium"
+            style={[
+              {display: usernameNull ? 'flex' : 'none'},
+              styles.failedText,
+            ]}>
+            * Username harus di isi
+          </Text>
+        </View>
+        <View style={styles.inputContainer}>
           <Text text="Email" style={styles.inputLabel} weight="Light" />
           <TextInput
             style={styles.textInput}
             placeholder="Masukkan Email"
-            value={emailState}
+            value={email}
             onChange={value => setEmail(value.nativeEvent.text)}
           />
+          <Text
+            size={11}
+            weight="Medium"
+            style={[{display: emailNull ? 'flex' : 'none'}, styles.failedText]}>
+            * Email harus di isi
+          </Text>
         </View>
         <View style={styles.inputContainer}>
           <Text text="Password" style={styles.inputLabel} weight="Light" />
           <TextInput
             style={styles.textInput}
             placeholder="Masukkan password"
-            value={passwordState}
-            onChange={value => 
-              setPassword(value.nativeEvent.text)}
+            value={password}
+            onChange={value => setPassword(value.nativeEvent.text)}
           />
+          <Text
+            size={11}
+            weight="Medium"
+            style={[
+              {display: passwordNull ? 'flex' : 'none'},
+              styles.failedText,
+            ]}>
+            * Password harus di isi
+          </Text>
         </View>
         <View style={styles.inputContainer}>
           <Text
@@ -70,11 +118,20 @@ function RegisterScreen(props) {
             weight="Light"
           />
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, samePassword ? {} : {color: 'red'}]}
             placeholder="Masukkan ulang password"
             value={password2}
             onChange={value => setPassword2(value.nativeEvent.text)}
           />
+          <Text
+            size={11}
+            weight="Medium"
+            style={[
+              {display: samePassword ? 'none' : 'flex'},
+              styles.failedText,
+            ]}>
+            *Password tidak sama!
+          </Text>
         </View>
         <TouchableOpacity
           style={styles.inputSubmit}
@@ -119,9 +176,13 @@ const mapStateToProps = state => ({
   email: state.email,
 });
 const mapDispatchToProps = dispatch => ({
-  registerFunc: (data) => dispatch(register(data)),
+  registerFunc: data => dispatch(register(data)),
+  loginGoogle: () => dispatch(loginWithGoogle()),
 });
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(RegisterScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -183,5 +244,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
     marginBottom: 25,
+  },
+  failedText: {
+    color: 'red',
+    marginTop: 5,
   },
 });
