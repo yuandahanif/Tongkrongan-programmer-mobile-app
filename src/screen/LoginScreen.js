@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {
   StyleSheet,
@@ -13,12 +13,13 @@ import ImageLogo from '../components/ImageLogo';
 import {login} from '../actions/authAction';
 
 export function LoginScreen(props) {
-  const {loginFunc, navigation} = props;
+  const {loginFunc, navigation, isAuth, isFailed} = props;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const onClick = (googleAuth = false) => {
     loginFunc({username, password, googleAuth});
+    console.warn(isFailed);
   };
 
   return (
@@ -39,7 +40,7 @@ export function LoginScreen(props) {
         <View style={styles.inputContainer}>
           <Text text="Username" style={styles.inputLabel} weight="Light" />
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, isFailed ? {borderBottomColor: 'red'} : {},]}
             placeholder="Masukkan username"
             defaultValue={username}
             onChange={value => setUsername(value.nativeEvent.text)}
@@ -91,13 +92,19 @@ export function LoginScreen(props) {
     </View>
   );
 }
+const mapStateToProps = state => {
+  return {
+    isAuth: state.authReducer.isAuth,
+    isFailed: state.authReducer.loginFailed,
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   loginFunc: data => dispatch(login(data)),
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(LoginScreen);
 

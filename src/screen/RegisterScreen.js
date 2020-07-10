@@ -13,7 +13,6 @@ import {register} from '../actions/authAction';
 
 function RegisterScreen(props) {
   const {registerFunc, username, password, email, navigation} = props;
-  console.log('dari regster ',username);
   const [usernameState, setUsername] = useState('');
   const [passwordState, setPassword] = useState('');
   const [emailState, setEmail] = useState('');

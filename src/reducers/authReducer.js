@@ -1,4 +1,4 @@
-import {LOGIN, LOGOUT, REGISTER, CHECK_AUTH} from '../actions/Types';
+import {LOGIN, LOGOUT, REGISTER, CHECK_AUTH, LOGIN_FAILED} from '../actions/Types';
 
 const authState = {
   username: '',
@@ -6,6 +6,7 @@ const authState = {
   email: '',
   loginWithGoogle: false,
   isAuth: false,
+  loginFailed: false,
 };
 
 export const authReducer = (state = authState, action) => {
@@ -18,6 +19,8 @@ export const authReducer = (state = authState, action) => {
       return {...state};
     case CHECK_AUTH:
       return{...state, isAuth: true}
+    case LOGIN_FAILED:
+      return{...state, loginFailed: true}
     default: 
     return state;
   }

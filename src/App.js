@@ -66,7 +66,7 @@ const TabScreen = () => (
 
 function App(props) {
   const {isAuth, isAuthFunc} = props;
-  isAuthFunc();
+  // isAuthFunc();
   return (
     <NavigationContainer>
       {isAuth ? <TabScreen /> : <AuthStackScreen />}
