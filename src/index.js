@@ -5,9 +5,11 @@ import thunkMiddleware from 'redux-thunk';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import {authReducer} from './reducers/authReducer';
+import {articleReducer} from './reducers/articleReducer';
 
 const reducers = combineReducers({
   authReducer,
+  articleReducer,
 });
 
 const store = () => createStore(reducers, applyMiddleware(thunkMiddleware));

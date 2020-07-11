@@ -8,7 +8,7 @@ import SkillTagList from './SkillTagList';
 import {PostAuthor as Author, PostAuthorSkeleton as AuthorSkeleton} from './PostAuthor'
 
 export function ProjectPostList(props) {
-  const {data, titleOnClick} = props;
+  const {data, titleOnClick, index} = props;
   return (
     <View style={styles.post}>
       <Author name={data.owner.login} avatar_url={data.owner.avatar_url} />
@@ -20,7 +20,7 @@ export function ProjectPostList(props) {
         <View style={styles.leftDescription}>
           <TouchableOpacity
           activeOpacity={0.8}
-          onPress={()=>{titleOnClick(data.id)}}
+          onPress={()=>{titleOnClick(index)}}
           >
             <Text text={data.name} size={16} />
           </TouchableOpacity>

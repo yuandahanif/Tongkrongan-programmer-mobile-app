@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,6 +6,8 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
+import {connect} from 'react-redux';
 
 import Text from '../components/Text';
 import {
@@ -13,45 +15,27 @@ import {
   ProjectPostListSkeleton,
 } from '../components/ProjectPost';
 import SkillTagList from '../components/SkillTagList';
+import {getArticle} from '../actions/articleAction';
 
-import gitApiData from '../data/githubApi.json';
-import {FlatList} from 'react-native-gesture-handler';
-
-export default function SkillScreen(props) {
-  const {navigation} = props;
+function SkillScreen(props) {
+  const {navigation, fetchArticle, articles} = props;
   const DEVICE = Dimensions.get('window');
-  const [data, setData] = useState([]);
-
-  async function getGithubRepo() {
-    try {
-      let RNG = Math.round(Math.random() * 50);
-      console.warn(RNG);
-      let repos = await fetch(
-        `https://api.github.com/repositories?since=${RNG.toString()}`,
-      );
-      let data = await repos.json();
-      setData(data);
-    } catch (err) {
-      console.warn(err);
-      setData(gitApiData); //offline data
-    }
-  }
 
   useEffect(() => {
-    getGithubRepo();
+    fetchArticle();
   }, []);
 
-  const goToDetail = _id => {
-    navigation.push('detail', {_id});
+  const goToDetail = index => {
+    navigation.push('detail', {index});
   };
 
   return (
     <FlatList
-      data={data}
+      data={articles}
       refreshing={true}
       ListEmptyComponent={() => <ProjectPostListSkeleton />}
       onRefresh={() => {
-        getGithubRepo();
+        fetchArticle();
       }}
       ListHeaderComponent={() => (
         <View style={styles.container}>
@@ -107,12 +91,22 @@ export default function SkillScreen(props) {
       ListFooterComponent={() => <View />}
       ListFooterComponentStyle={styles.listFooter}
       renderItem={data => (
-        <ProjectPost titleOnClick={goToDetail} data={data.item} />
+        <ProjectPost titleOnClick={goToDetail} index={data.index} data={data.item} />
       )}
       keyExtractor={data => data.node_id}
     />
   );
 }
+const mapsStateToProps = state => ({
+  articles: state.articleReducer.articleData,
+});
+const mapDispatchToProps = dispatch => ({
+  fetchArticle: () => dispatch(getArticle()),
+});
+export default connect(
+  mapsStateToProps,
+  mapDispatchToProps,
+)(SkillScreen);
 
 const styles = StyleSheet.create({
   container: {
