@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,12 +6,12 @@ import {
   Image,
   Modal,
   TouchableHighlight,
+  Linking,
 } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 import {connect} from 'react-redux';
 import {logout} from '../actions/authAction';
-import {getUser} from '../actions/articleAction';
 
 import Text from '../components/Text';
 import SkillList from '../components/SkillList';
@@ -29,7 +29,19 @@ const AbouteMeScreen = props => {
   let id = 1;
   const [modalVisible, setModalVisible] = useState(false);
 
-  const logoutClick = () => {logoutFunc()};
+  const logoutClick = () => {
+    logoutFunc();
+  };
+
+  const openLink = async (url) => {
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -90,7 +102,7 @@ const AbouteMeScreen = props => {
               renderItem={data => (
                 <TouchableOpacity
                   onPressIn={() => {
-                    alert(data.item.account);
+                    openLink(data.item.account);
                   }}>
                   <Icon
                     name={data.item.iName}
@@ -174,7 +186,6 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   logoutFunc: () => dispatch(logout()),
-
 });
 export default connect(
   mapStateToProps,

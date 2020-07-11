@@ -6,11 +6,7 @@ export default function SearchScreen() {
   const onClick = () => signOut();
   return (
     <View style={styles.container}>
-      <Text>Maaf halaman belum di buat!</Text>
-      <Text>dan hanya ada tombol Logout disini</Text>
-      <TouchableOpacity onPress={() => onClick()} style={styles.logout}>
-        <Text>Logout</Text>
-      </TouchableOpacity>
+      <Text>Maaf halaman belum di selesai buat!</Text>
     </View>
   );
 }
