@@ -73,7 +73,7 @@ const AbouteMeScreen = props => {
       <View style={styles.bar}>
         <Text
           lineBreak={1}
-          text={user.username}
+          text="Yuanda Hanif"
           size={24}
           color="white"
           badge={true}
