@@ -5,13 +5,16 @@ import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
 import Text from './Text';
 import SkillTagList from './SkillTagList';
-import {PostAuthor as Author, PostAuthorSkeleton as AuthorSkeleton} from './PostAuthor'
+import {
+  PostAuthor as Author,
+  PostAuthorSkeleton as AuthorSkeleton,
+} from './PostAuthor';
 
 export function ProjectPostList(props) {
   const {data, titleOnClick, index} = props;
   return (
     <View style={styles.post}>
-      <Author name={data.owner.login} avatar_url={data.owner.avatar_url} />
+      <Author index={index} name={data.owner.login} avatar_url={data.owner.avatar_url} />
       <Image
         style={styles.postImage}
         source={{uri: 'https://via.placeholder.com/350?text=its+the+post'}}
@@ -19,9 +22,10 @@ export function ProjectPostList(props) {
       <View style={styles.postDescription}>
         <View style={styles.leftDescription}>
           <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={()=>{titleOnClick(index)}}
-          >
+            activeOpacity={0.8}
+            onPress={() => {
+              titleOnClick(index);
+            }}>
             <Text text={data.name} size={16} />
           </TouchableOpacity>
           <SkillTagList tagList={data.skillTag} itemLimit={10} />

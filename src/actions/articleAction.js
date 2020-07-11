@@ -1,4 +1,4 @@
-import {GET_ARTICLE, GET_ARTICLE_DETAIL} from '../actions/Types';
+import {GET_ARTICLE, GET_ARTICLE_DETAIL, GET_USER} from '../actions/Types';
 import offlineItems from '../data/githubApi.json';
 export const getArticle = () => {
   return async dispatch => {
@@ -26,4 +26,12 @@ export const getArticleDetail = index => {
 const detailDispatch = (index) => ({
   type: GET_ARTICLE_DETAIL,
   payload: {index},
+});
+
+export const getUser = index => {
+  return dispatch => dispatch(authorDispatch(index));
+};
+const authorDispatch = (indexUser) => ({
+  type: GET_USER,
+  payload: {indexUser},
 });

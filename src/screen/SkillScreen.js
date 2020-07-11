@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -20,6 +20,7 @@ import {getArticle} from '../actions/articleAction';
 function SkillScreen(props) {
   const {navigation, fetchArticle, articles} = props;
   const DEVICE = Dimensions.get('window');
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchArticle();
@@ -29,13 +30,19 @@ function SkillScreen(props) {
     navigation.push('detail', {index});
   };
 
+  const goToUserInfo = (index) => {
+    navigation.push('userInfo', {index});
+  }
+
   return (
     <FlatList
       data={articles}
-      refreshing={true}
+      refreshing={refreshing}
       ListEmptyComponent={() => <ProjectPostListSkeleton />}
       onRefresh={() => {
         fetchArticle();
+        setRefreshing(true);
+        // setTimeout(()=>{setRefreshing(false)}, 2000)
       }}
       ListHeaderComponent={() => (
         <View style={styles.container}>
@@ -91,7 +98,11 @@ function SkillScreen(props) {
       ListFooterComponent={() => <View />}
       ListFooterComponentStyle={styles.listFooter}
       renderItem={data => (
-        <ProjectPost titleOnClick={goToDetail} index={data.index} data={data.item} />
+        <ProjectPost
+          titleOnClick={goToDetail}
+          index={data.index}
+          data={data.item}
+        />
       )}
       keyExtractor={data => data.node_id}
     />

@@ -1,7 +1,8 @@
-import {GET_ARTICLE, GET_ARTICLE_DETAIL } from '../actions/Types';
+import {GET_ARTICLE, GET_ARTICLE_DETAIL, GET_USER } from '../actions/Types';
 const initialState = {
     articleData: [],
     articleDetail: {},
+    user: {},
 }
 
 export const articleReducer = (state = initialState, action) =>{
@@ -15,6 +16,10 @@ export const articleReducer = (state = initialState, action) =>{
             const {index} = action.payload;
             const articleDetail = state.articleData[index];
             return {...state, articleDetail}
+        case GET_USER:
+            const {indexUser} = action.payload;
+            const artileAuthor = state.artileAuthor[indexUser].owner;
+            return {...state, artileAuthor}
         default:
             return state;
     }

@@ -17,14 +17,13 @@ const authState = {
 };
 
 export const authReducer = (state = authState, action) => {
-  console.log(action);
-  const data = action.payload;
   switch (action.type) {
     case LOGIN:
+      const {username, password} = action.payload;
       return {
         ...state,
-        username: data.username,
-        password: data.password,
+        username,
+        password,
         isAuth: true,
       };
     case REGISTER:
@@ -35,12 +34,14 @@ export const authReducer = (state = authState, action) => {
       return {
         ...state,
         isAuth: true,
-        username: 'username from google',
-        email: 'google email',
+        username: 'Google username',
+        email: 'your google email',
         password: 'auth using google',
       };
     case LOGIN_FAILED:
       return {...state, loginFailed: true};
+    case LOGOUT:
+      return {...state, isAuth: false};
     default:
       return state;
   }

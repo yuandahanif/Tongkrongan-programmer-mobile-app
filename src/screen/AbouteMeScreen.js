@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   Image,
-  // FlatList,
-  // ScrollView,
+  Modal,
+  TouchableHighlight,
 } from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
-import TabBar from '../components/TabBar';
+import {connect} from 'react-redux';
+import {logout} from '../actions/authAction';
+import {getUser} from '../actions/articleAction';
+
 import Text from '../components/Text';
 import SkillList from '../components/SkillList';
 import skillData from '../data/skillData.json';
 import dataSociall from '../data/socialData.json';
-import {ScrollView, FlatList} from 'react-native-gesture-handler';
 
 const languageSkill = skillData.items.filter(v => v.category === 'Language');
 const LibrarySkill = skillData.items.filter(v => v.category === 'Library');
@@ -21,14 +24,44 @@ const TechnologySkill = skillData.items.filter(
   v => v.category === 'Technology',
 );
 
-export default function AbouteMeScreen() {
+const AbouteMeScreen = props => {
+  const {user, logoutFunc} = props;
   let id = 1;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const logoutClick = () => {logoutFunc()};
+
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableHighlight
+              style={{...styles.modalButton}}
+              onPress={logoutClick}>
+              <Text style={styles.textStyle}>Logout</Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              style={{...styles.modalButton}}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}>
+              <Text style={styles.textStyle}>Close</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.bar}>
         <Text
           lineBreak={1}
-          text="Yuanda Hanif"
+          text={user.username}
           size={24}
           color="white"
           badge={true}
@@ -73,7 +106,12 @@ export default function AbouteMeScreen() {
         </View>
       </View>
       <View style={styles.profileSkill}>
-        <TouchableOpacity style={styles.editAkun} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={styles.editAkun}
+          activeOpacity={0.8}
+          onPress={() => {
+            setModalVisible(true);
+          }}>
           <Icon name="settings" size={11} style={styles.settingIcon} />
           <Text text="Edit akun" />
         </TouchableOpacity>
@@ -130,7 +168,18 @@ export default function AbouteMeScreen() {
       </View>
     </View>
   );
-}
+};
+const mapStateToProps = state => ({
+  user: state.authReducer,
+});
+const mapDispatchToProps = dispatch => ({
+  logoutFunc: () => dispatch(logout()),
+
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AbouteMeScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -216,5 +265,46 @@ const styles = StyleSheet.create({
   },
   skillCategoryContainer: {
     flexDirection: 'row',
+  },
+  // modal
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 30,
+    marginTop: 22,
+  },
+  modalView: {
+    // margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 4,
+    paddingHorizontal: 35,
+    paddingVertical: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  modalButton: {
+    backgroundColor: '#2196F3',
+    width: '100%',
+    borderRadius: 5,
+    padding: 10,
+    elevation: 2,
+    marginVertical: 2,
+    alignItems: 'center',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });

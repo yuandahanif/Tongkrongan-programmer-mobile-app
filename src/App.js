@@ -23,6 +23,7 @@ const skillStackScreen = () => (
   <skillStack.Navigator initialRouteName="home" headerMode="none" >
     <skillStack.Screen name="home" component={SkillScreen} />
     <skillStack.Screen name="detail" component={DetailScreen} />
+    <skillStack.Screen name="userInfo" component={AbouteMeScreen} />
   </skillStack.Navigator>
 );
 

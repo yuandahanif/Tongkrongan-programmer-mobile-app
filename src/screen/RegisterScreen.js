@@ -32,7 +32,7 @@ function RegisterScreen(props) {
         password,
         googleAuth,
       });
-      navigation.push('login');
+      navigation.push('Login');
     } else {
       setUsernameNull(username === '');
       setEmailNull(email === '');
