@@ -55,6 +55,7 @@ const AbouteMeScreen = props => {
 
   let id = 1;
   const [modalVisible, setModalVisible] = useState(false);
+  
   const logoutClick = () => {
     navigation.reset({
       index: 0,
