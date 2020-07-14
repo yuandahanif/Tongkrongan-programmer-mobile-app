@@ -28,14 +28,17 @@ Aplikasi untuk show-off project dan skill para programmer di indonesia.
 - Integrasi dengan Firebase.
 - Registrasi dan Login menggunakan Firebase.
 - Selesai membuat skema Database untuk User.
+- Halaman AboutMe menampilkan informasi User yang sedang Login.
 
 ## Kekurangan
 #### Alpha
-##### V1 (11 juli 2020) :
-- data registrasi disimpan di penyimpanan lokal.
-- hanya bisa menyimpan 1 data registrasi.
-- tulisan "Selamat pagi, Yuanda Hanif" pada halaman Home masih bersifat statis.
+
+ - ~~data registrasi disimpan di penyimpanan lokal.~~
+-  ~~hanya bisa menyimpan 1 data registrasi.~~
+- ~~tulisan "Selamat pagi, Yuanda Hanif" pada halaman Home masih bersifat statis.~~
 - login dengan google belum berfungsi.
 - belum ada error handling untuk gagal load gambar pada internet lambat.
+- ~~login setelah logout langsung mengarah ke halaman AboutMe~~
+- Data Skill dan Pengalaman pada halaman AbouteMe menampilkan data statis.
 
 
