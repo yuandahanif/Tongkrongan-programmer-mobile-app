@@ -45,6 +45,7 @@ export const login = payload => {
           })
           .catch(e => {
             alert(e);
+            console.log('error in loginAction',e);
           });
       });
   };
@@ -75,7 +76,6 @@ export const register = payload => {
       .createUserWithEmailAndPassword(email, password)
       .then(response => {
         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-        alert(timestamp);
         const uid = response.user.uid;
         const data = {
           id: uid,
@@ -106,6 +106,7 @@ export const register = payload => {
       })
       .catch(e => {
         alert(e);
+        console.log('error in regisAction',e);
       });
   };
 };
