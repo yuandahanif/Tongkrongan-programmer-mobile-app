@@ -7,32 +7,54 @@ import {
   LOGIN_WITH_GOOGLE,
 } from './Types';
 import AsyncStorage from '@react-native-community/async-storage';
+import {firebase} from '../firebase/config';
+firebase.firestore().settings({ experimentalForceLongPolling: true });
 
 export const login = payload => {
-  const {username, password, googleAuth} = payload;
-  return async dispatch => {
-    AsyncStorage.getItem('@auth')
-      .then(value => {
-        if (value !== null) {
-          value = JSON.parse(value);
-          if (username === value.username && password === value.password) {
-            dispatch(loginSuccess(value));
-          } else {
-            // ! if login failed
-            dispatch(loginFailed());
-          }
-        }
-      })
-      .catch(e => dispatch(loginFailed()));
+  return dispatch => {
+    // AsyncStorage.getItem('@auth')
+    //   .then(value => {
+    //     if (value !== null) {
+    //       value = JSON.parse(value);
+    //       if (username === value.username && password === value.password) {
+    //         dispatch(loginSuccess(value));
+    //       } else {
+    //         // ! if login failed
+    //         dispatch(loginFailed());
+    //       }
+    //     }
+    //   })
+    //   .catch(e => dispatch(loginFailed()));
+
+    const {email, password, googleAuth} = payload;
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(response => {
+        const uid = response.user.uid;
+        const userRef = firebase.firestore().collection('users');
+        userRef
+          .doc(uid)
+          .get()
+          .then(firebaseDocument => {
+            if (!firebaseDocument.exists) {
+              alert('user doesnt exis anymore');
+              dispatch(loginFailed());
+            }
+            console.log('login data', firebaseDocument.data());
+            dispatch(loginSuccess(firebaseDocument.data()));
+          })
+          .catch(e => {
+            alert(e);
+          });
+      });
   };
 };
 
 const loginSuccess = value => ({
   type: LOGIN,
   payload: {
-    username: value.username,
-    password: value.password,
-    googleAuth: value.googleAuth,
+    ...value,
   },
 });
 const loginFailed = () => ({
@@ -41,21 +63,57 @@ const loginFailed = () => ({
 
 export const register = payload => {
   return dispatch => {
-    const jsonValue = JSON.stringify(payload);
-    AsyncStorage.setItem('@auth', jsonValue)
-      .then(() => {
-        dispatch(registerSuccess(payload));
+    // const jsonValue = JSON.stringify(payload);
+    // AsyncStorage.setItem('@auth', jsonValue)
+    //   .then(() => {
+    //     dispatch(registerSuccess(payload));
+    //   })
+    //   .catch(() => dispatch(loginFailed()));
+    const {username, email, password} = payload;
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(response => {
+        const timestamp = firebase.firestore.FieldValue.serverTimestamp();
+        alert(timestamp);
+        const uid = response.user.uid;
+        const data = {
+          id: uid,
+          username,
+          email,
+          Experience: {
+            Job: [],
+            internship: [],
+          },
+          createdAt: timestamp,
+          avatar_url: `https://ui-avatars.com/api/?name=${username}`,
+          externalLink: [],
+          skills: {
+            Language: [],
+            Library: [],
+            Technology: [],
+          },
+        };
+
+        const userRef = firebase.firestore().collection('users');
+        userRef
+          .doc(uid)
+          .set(data)
+          .then(() => dispatch(registerSuccess()))
+          .catch(e => {
+            dispatch(loginFailed());
+          });
       })
-      .catch(() => dispatch(loginFailed()));
+      .catch(e => {
+        alert(e);
+      });
   };
 };
 const registerSuccess = value => ({
   type: REGISTER,
   payload: {
-    username: value.username,
-    email: value.email,
-    password: value.password,
-    googleAuth: value.googleAuth,
+    ...value,
   },
 });
 

@@ -7,29 +7,37 @@ import {
   LOGIN_WITH_GOOGLE,
 } from '../actions/Types';
 
-const authState = {
+// const authState = {
+//   username: '',
+//   password: '',
+//   email: '',
+// loginWithGoogle: false,
+// isAuth: false,
+// loginFailed: false,
+// };
+
+const initialState = {
+  id: null,
   username: '',
-  password: '',
+  avatar_url: '',
   email: '',
-  loginWithGoogle: false,
-  isAuth: false,
+  Experience: {Job: [], internship: []},
+  createdAt: null,
+  externalLink: [],
+  skills: {Language: [], Library: [], Technology: []},
+  // loginWithGoogle: false,
   loginFailed: false,
 };
 
-export const authReducer = (state = authState, action) => {
+export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
-      const {username, password} = action.payload;
+      const data = action.payload;
       return {
-        ...state,
-        username,
-        password,
-        isAuth: true,
+        ...data,
       };
     case REGISTER:
       return {...state};
-    case CHECK_AUTH:
-      return {...state, isAuth: true};
     case LOGIN_WITH_GOOGLE:
       return {
         ...state,

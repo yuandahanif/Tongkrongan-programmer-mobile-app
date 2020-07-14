@@ -6,9 +6,10 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import {connect} from 'react-redux';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Text from '../components/Text';
 import ImageLogo from '../components/ImageLogo';
-import {connect} from 'react-redux';
 import {register, loginWithGoogle} from '../actions/authAction';
 
 function RegisterScreen(props) {
@@ -47,126 +48,135 @@ function RegisterScreen(props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topLogo}>
-        <Image source={require('../assets/images/Logo(2).png')} />
-        <Text style={styles.topLogoTitle} text="Tongkrongan Programmer" />
-      </View>
-
-      <View style={styles.formLogin}>
-        <Text style={styles.greatingBig} text="Selamat datang," />
-        <Text
-          style={styles.greatingSmall}
-          weight="Regular"
-          text="Silahkan Mendaftar"
-        />
-
-        <View style={styles.inputContainer}>
-          <Text text="Username" style={styles.inputLabel} weight="Light" />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Masukkan username"
-            value={username}
-            onChange={value => setUsername(value.nativeEvent.text)}
-          />
-          <Text
-            size={11}
-            weight="Medium"
-            style={[
-              {display: usernameNull ? 'flex' : 'none'},
-              styles.failedText,
-            ]}>
-            * Username harus di isi
-          </Text>
+      <KeyboardAwareScrollView style={{paddingTop: 50}}>
+        <View style={styles.topLogo}>
+          <Image source={require('../assets/images/Logo(2).png')} />
+          <Text style={styles.topLogoTitle} text="Tongkrongan Programmer" />
         </View>
-        <View style={styles.inputContainer}>
-          <Text text="Email" style={styles.inputLabel} weight="Light" />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Masukkan Email"
-            value={email}
-            onChange={value => setEmail(value.nativeEvent.text)}
-          />
-          <Text
-            size={11}
-            weight="Medium"
-            style={[{display: emailNull ? 'flex' : 'none'}, styles.failedText]}>
-            * Email harus di isi
-          </Text>
-        </View>
-        <View style={styles.inputContainer}>
-          <Text text="Password" style={styles.inputLabel} weight="Light" />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Masukkan password"
-            value={password}
-            onChange={value => setPassword(value.nativeEvent.text)}
-          />
-          <Text
-            size={11}
-            weight="Medium"
-            style={[
-              {display: passwordNull ? 'flex' : 'none'},
-              styles.failedText,
-            ]}>
-            * Password harus di isi
-          </Text>
-        </View>
-        <View style={styles.inputContainer}>
-          <Text
-            text="Masukan ulang password"
-            style={styles.inputLabel}
-            weight="Light"
-          />
-          <TextInput
-            style={[styles.textInput, samePassword ? {} : {color: 'red'}]}
-            placeholder="Masukkan ulang password"
-            value={password2}
-            onChange={value => setPassword2(value.nativeEvent.text)}
-          />
-          <Text
-            size={11}
-            weight="Medium"
-            style={[
-              {display: samePassword ? 'none' : 'flex'},
-              styles.failedText,
-            ]}>
-            *Password tidak sama!
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.inputSubmit}
-          activeOpacity={0.8}
-          onPress={() => {
-            onClick();
-          }}>
-          <Text text="Daftar" color="white" />
-        </TouchableOpacity>
-        <Text text="Atau" size={12} style={styles.atau} />
-        <TouchableOpacity
-          style={[styles.inputSubmit, styles.inputSubmitGoogle]}
-          activeOpacity={0.8}
-          onPress={() => {
-            onClick(true);
-          }}>
-          <ImageLogo
-            file={require('../assets/images/google-original.png')}
-            size={24}
-            margin={10}
-          />
-          <Text text="Masuk dengan Google" />
-        </TouchableOpacity>
 
-        <Text text="Sudah punya akun?" size={12} />
+        <View style={styles.formLogin}>
+          <Text style={styles.greatingBig} text="Selamat datang," />
+          <Text
+            style={styles.greatingSmall}
+            weight="Regular"
+            text="Silahkan Mendaftar"
+          />
 
-        <TouchableOpacity
-          style={[styles.inputSubmit, styles.inputSubmitGoogle]}
-          activeOpacity={0.8}
-          onPress={() => {
-            navigation.push('Login');
-          }}>
-          <Text text="Masuk" />
-        </TouchableOpacity>
-      </View>
+          <View style={styles.inputContainer}>
+            <Text text="Username" style={styles.inputLabel} weight="Light" />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Masukkan username"
+              value={username}
+              onChange={value => setUsername(value.nativeEvent.text)}
+              autoCapitalize="none"
+            />
+            <Text
+              size={11}
+              weight="Medium"
+              style={[
+                {display: usernameNull ? 'flex' : 'none'},
+                styles.failedText,
+              ]}>
+              * Username harus di isi
+            </Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text text="Email" style={styles.inputLabel} weight="Light" />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Masukkan Email"
+              value={email}
+              onChange={value => setEmail(value.nativeEvent.text)}
+              autoCapitalize="none"
+            />
+            <Text
+              size={11}
+              weight="Medium"
+              style={[
+                {display: emailNull ? 'flex' : 'none'},
+                styles.failedText,
+              ]}>
+              * Email harus di isi
+            </Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text text="Password" style={styles.inputLabel} weight="Light" />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Masukkan password"
+              value={password}
+              onChange={value => setPassword(value.nativeEvent.text)}
+              autoCapitalize="none"
+            />
+            <Text
+              size={11}
+              weight="Medium"
+              style={[
+                {display: passwordNull ? 'flex' : 'none'},
+                styles.failedText,
+              ]}>
+              * Password harus di isi
+            </Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text
+              text="Masukan ulang password"
+              style={styles.inputLabel}
+              weight="Light"
+            />
+            <TextInput
+              style={[styles.textInput, samePassword ? {} : {color: 'red'}]}
+              placeholder="Masukkan ulang password"
+              value={password2}
+              onChange={value => setPassword2(value.nativeEvent.text)}
+              autoCapitalize="none"
+            />
+            <Text
+              size={11}
+              weight="Medium"
+              style={[
+                {display: samePassword ? 'none' : 'flex'},
+                styles.failedText,
+              ]}>
+              *Password tidak sama!
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.inputSubmit}
+            activeOpacity={0.8}
+            onPress={() => {
+              onClick();
+            }}>
+            <Text text="Daftar" color="white" />
+          </TouchableOpacity>
+          <Text text="Atau" size={12} style={styles.atau} />
+          <TouchableOpacity
+            style={[styles.inputSubmit, styles.inputSubmitGoogle]}
+            activeOpacity={0.8}
+            onPress={() => {
+              onClick(true);
+            }}>
+            <ImageLogo
+              file={require('../assets/images/google-original.png')}
+              size={24}
+              margin={10}
+            />
+            <Text text="Masuk dengan Google" />
+          </TouchableOpacity>
+
+          <Text text="Sudah punya akun?" size={12} />
+
+          <TouchableOpacity
+            style={[styles.inputSubmit, styles.inputSubmitGoogle]}
+            activeOpacity={0.8}
+            onPress={() => {
+              navigation.push('Login');
+            }}>
+            <Text text="Masuk" />
+          </TouchableOpacity>
+        </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 }

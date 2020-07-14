@@ -26,9 +26,14 @@ const TechnologySkill = skillData.items.filter(
 
 const AbouteMeScreen = props => {
   const {user, logoutFunc} = props;
+  const {username,avatar_url,createdAt,externalLink,skills,Experience} = user;
+  const months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const date = new Date(createdAt.seconds * 1000);
+  const displayCreatedAt = `${date.getDate()} ${months_arr[date.getMonth()]} ${date.getFullYear()}`
+
   let id = 1;
   const [modalVisible, setModalVisible] = useState(false);
-
+  console.log(user);
   const logoutClick = () => {
     logoutFunc();
   };
@@ -73,14 +78,14 @@ const AbouteMeScreen = props => {
       <View style={styles.bar}>
         <Text
           lineBreak={1}
-          text="Yuanda Hanif"
+          text={username}
           size={24}
           color="white"
           badge={true}
           badgeTextColor="white"
         />
         <Text
-          text="Bergabung sejak Juni 15, 2020"
+          text={`Bergabung sejak ${displayCreatedAt}`}
           color="white"
           size={11}
           weight="Light"
@@ -89,7 +94,8 @@ const AbouteMeScreen = props => {
       <View style={styles.profileInfo}>
         <Image
           style={styles.profileInfoImage}
-          source={require('../assets/images/profile.png')}
+          defaultSource={require('../assets/images/ui-avatars.com.png')}
+          source={{uri: avatar_url}}
         />
         <View style={styles.profileInfoSocial}>
           <Text size={11} weight="Light">
@@ -214,6 +220,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     marginTop: -40,
+    borderRadius: 50,
   },
   profileInfoSocial: {
     marginLeft: 15,

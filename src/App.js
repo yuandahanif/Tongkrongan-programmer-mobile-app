@@ -80,7 +80,7 @@ function App(props) {
 }
 const mapStateToProps = state => {
   return {
-    isAuth: state.authReducer.isAuth,
+    isAuth: state.authReducer.id,
   };
 };
 export default connect(mapStateToProps)(App);

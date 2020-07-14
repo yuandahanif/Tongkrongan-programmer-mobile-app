@@ -6,6 +6,8 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import {authReducer} from './reducers/authReducer';
 import {articleReducer} from './reducers/articleReducer';
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Setting a timer']);
 
 const reducers = combineReducers({
   authReducer,
