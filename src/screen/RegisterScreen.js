@@ -108,6 +108,8 @@ function RegisterScreen(props) {
               value={password}
               onChange={value => setPassword(value.nativeEvent.text)}
               autoCapitalize="none"
+              autoCompleteType="password"
+              secureTextEntry={true}
             />
             <Text
               size={11}
@@ -131,6 +133,8 @@ function RegisterScreen(props) {
               value={password2}
               onChange={value => setPassword2(value.nativeEvent.text)}
               autoCapitalize="none"
+              autoCompleteType="password"
+              secureTextEntry={true}
             />
             <Text
               size={11}

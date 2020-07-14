@@ -49,7 +49,16 @@ export const authReducer = (state = initialState, action) => {
     case LOGIN_FAILED:
       return {...state, loginFailed: true};
     case LOGOUT:
-      return {...state, isAuth: false};
+      return {
+        id: null,
+        username: '',
+        avatar_url: '',
+        email: '',
+        createdAt: null,
+        externalLink: [],
+        skills: {Language: [], Library: [], Technology: []},
+        loginFailed: false,
+      };
     default:
       return state;
   }

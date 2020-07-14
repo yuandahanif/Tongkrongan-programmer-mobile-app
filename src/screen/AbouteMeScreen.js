@@ -25,20 +25,45 @@ const TechnologySkill = skillData.items.filter(
 );
 
 const AbouteMeScreen = props => {
-  const {user, logoutFunc} = props;
-  const {username,avatar_url,createdAt,externalLink,skills,Experience} = user;
-  const months_arr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const {user, navigation, logoutFunc} = props;
+  const {
+    username,
+    avatar_url,
+    createdAt,
+    externalLink,
+    skills,
+    Experience,
+  } = user;
+  const months_arr = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
   const date = new Date(createdAt.seconds * 1000);
-  const displayCreatedAt = `${date.getDate()} ${months_arr[date.getMonth()]} ${date.getFullYear()}`
+  const displayCreatedAt = `${date.getDate()} ${
+    months_arr[date.getMonth()]
+  } ${date.getFullYear()}`;
 
   let id = 1;
   const [modalVisible, setModalVisible] = useState(false);
-  console.log(user);
   const logoutClick = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
     logoutFunc();
   };
 
-  const openLink = async (url) => {
+  const openLink = async url => {
     const supported = await Linking.canOpenURL(url);
 
     if (supported) {

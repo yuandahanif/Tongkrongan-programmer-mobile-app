@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import Text from '../components/Text';
 import ImageLogo from '../components/ImageLogo';
@@ -20,6 +21,7 @@ export function LoginScreen(props) {
   const [password, setPassword] = useState('');
   const [usernameNull, setUsernameNull] = useState(true);
   const [passwordNull, setPasswordNull] = useState(true);
+  const [spinner, setSpinner] = useState(false);
 
   const onClick = (googleAuth = false) => {
     if (googleAuth) {
@@ -28,6 +30,7 @@ export function LoginScreen(props) {
       setUsernameNull(true);
       setPasswordNull(true);
       loginFunc({email: username, password});
+      setSpinner(true);
     } else {
       setUsernameNull(username !== '');
       setPasswordNull(password !== '');
@@ -36,6 +39,11 @@ export function LoginScreen(props) {
 
   return (
     <View style={styles.container}>
+      <Spinner
+        visible={spinner}
+        textContent={'Login...'}
+        // textStyle={styles.spinnerTextStyle}
+      />
       <KeyboardAwareScrollView>
         <View style={styles.topLogo}>
           <Image source={require('../assets/images/Logo(2).png')} />
@@ -57,6 +65,7 @@ export function LoginScreen(props) {
               placeholder="Masukkan Email"
               defaultValue={username}
               onChange={value => setUsername(value.nativeEvent.text)}
+              autoCapitalize="none"
             />
             <Text
               size={11}
@@ -84,6 +93,9 @@ export function LoginScreen(props) {
               placeholder="Masukkan password"
               defaultValue={password}
               onChange={value => setPassword(value.nativeEvent.text)}
+              autoCapitalize="none"
+              autoCompleteType="password"
+              secureTextEntry={true}
             />
             <Text
               size={11}

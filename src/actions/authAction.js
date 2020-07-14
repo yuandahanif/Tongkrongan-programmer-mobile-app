@@ -41,7 +41,6 @@ export const login = payload => {
               alert('user doesnt exis anymore');
               dispatch(loginFailed());
             }
-            console.log('login data', firebaseDocument.data());
             dispatch(loginSuccess(firebaseDocument.data()));
           })
           .catch(e => {
