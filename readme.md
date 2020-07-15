@@ -2,6 +2,8 @@
 
 Aplikasi untuk show-off project dan skill para programmer di indonesia.
 
+[Link Figma](https://www.figma.com/file/ulLwQfXkM9mPSMdzwKIpdA/Tongkrongan-programmer-v3?node-id=0%3A1)
+
 ## Di buat menggunakan
 - [Neact Native](https://reactnative.dev/)
 - [redux-thunk](https://github.com/reduxjs/redux-thunk)
