@@ -5,56 +5,52 @@ import Text from './Text';
 
 export default function SkillList(props) {
   
-  const {skillData, title} = props;
+  const {skillData = [], title} = props;
   return (
     <View style={styles.container}>
       <Text text={title} size={14} style={styles.title} />
-      <FlatList
-        data={skillData}
-        renderItem={data => (
-          <View style={styles.skillInfo}>
-            <MCIcon name={data.item.iconName} size={28} />
-            <View style={styles.skillInfoDetail}>
-              <View style={styles.skillInfoTop}>
-                <Text
-                  text={data.item.skillName}
-                  weight="Regular"
-                  badge={true}
-                  badgeText={
-                    data.item.percentageProgress < 40
-                      ? 'Basic'
-                      : data.item.percentageProgress > 85
-                      ? 'Advanced'
-                      : 'Intermediate'
-                  }
-                  badgeColor={
-                    data.item.percentageProgress < 40
-                      ? '#55FF46'
-                      : data.item.percentageProgress > 85
-                      ? '#E1306C'
-                      : '#006192'
-                  }
-                  badgeTextColor="white"
-                />
-                <Text
-                  text={`${data.item.percentageProgress}%`}
-                  weight="Regular"
-                  style={styles.percentText}
-                />
-              </View>
-              <View style={styles.skillInfoPercent}>
-                <View
-                  style={[
-                    styles.percent,
-                    {width: `${data.item.percentageProgress}%`},
-                  ]}
-                />
-              </View>
-            </View>
+      {skillData && skillData.map( data => (
+        <View style={styles.skillInfo} key={data.id}>
+        <MCIcon name={data.iconName} size={28} />
+        <View style={styles.skillInfoDetail}>
+          <View style={styles.skillInfoTop}>
+            <Text
+              text={data.skillName}
+              weight="Regular"
+              badge={true}
+              badgeText={
+                data.percentageProgress < 40
+                  ? 'Basic'
+                  : data.percentageProgress > 85
+                  ? 'Advanced'
+                  : 'Intermediate'
+              }
+              badgeColor={
+                data.percentageProgress < 40
+                  ? '#55FF46'
+                  : data.percentageProgress > 85
+                  ? '#E1306C'
+                  : '#006192'
+              }
+              badgeTextColor="white"
+            />
+            <Text
+              text={`${data.percentageProgress}%`}
+              weight="Regular"
+              style={styles.percentText}
+            />
           </View>
-        )}
-        keyExtractor={data => data.id.toString()}
-      />
+          <View style={styles.skillInfoPercent}>
+            <View
+              style={[
+                styles.percent,
+                {width: `${data.percentageProgress}%`},
+              ]}
+            />
+          </View>
+        </View>
+      </View>
+      ))}
     </View>
   );
 }

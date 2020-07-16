@@ -7,15 +7,6 @@ import {
   LOGIN_WITH_GOOGLE,
 } from '../actions/Types';
 
-// const authState = {
-//   username: '',
-//   password: '',
-//   email: '',
-// loginWithGoogle: false,
-// isAuth: false,
-// loginFailed: false,
-// };
-
 const initialState = {
   id: null,
   username: '',
@@ -33,6 +24,8 @@ export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
       const data = action.payload;
+      console.log('frome reducer');
+
       return {
         ...data,
       };

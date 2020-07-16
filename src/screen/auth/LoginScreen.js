@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import {connect} from 'react-redux';
 import {
   StyleSheet,
   View,
@@ -6,51 +7,46 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {connect} from 'react-redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Text from '../components/Text';
-import ImageLogo from '../components/ImageLogo';
-import {register, loginWithGoogle} from '../actions/authAction';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-function RegisterScreen(props) {
-  const {registerFunc, navigation, loginGoogle} = props;
+import Text from '../../components/Text';
+import ImageLogo from '../../components/ImageLogo';
+
+import {login, loginWithGoogle} from '../../actions/authAction';
+
+export function LoginScreen(props) {
+  const {loginFunc, navigation, isFailed, loginGoogle} = props;
   const [username, setUsername] = useState('');
-  const [usernameNull, setUsernameNull] = useState(false);
   const [password, setPassword] = useState('');
-  const [passwordNull, setPasswordNull] = useState(false);
-  const [email, setEmail] = useState('');
-  const [emailNull, setEmailNull] = useState(false);
-  const [password2, setPassword2] = useState('');
-  const [samePassword, setsamePassword] = useState(true);
+  const [usernameNull, setUsernameNull] = useState(true);
+  const [passwordNull, setPasswordNull] = useState(true);
+  const [spinner, setSpinner] = useState(false);
 
   const onClick = (googleAuth = false) => {
     if (googleAuth) {
       loginGoogle();
-    } else if (username !== '' && samePassword && password !== '') {
-      registerFunc({
-        username,
-        email,
-        password,
-        googleAuth,
-      });
-      navigation.push('Login');
+    } else if ((username !== '', password !== '')) {
+      setUsernameNull(true);
+      setPasswordNull(true);
+      loginFunc({email: username, password});
+      setSpinner(true);
     } else {
-      setUsernameNull(username === '');
-      setEmailNull(email === '');
-      setPasswordNull(password === '');
-      setsamePassword(password2 !== '');
+      setUsernameNull(username !== '');
+      setPasswordNull(password !== '');
     }
   };
 
-  useEffect(() => {
-    setsamePassword(password === password2);
-  }, [password2]);
-
   return (
     <View style={styles.container}>
-      <KeyboardAwareScrollView style={{paddingTop: 50}}>
+      <Spinner
+        visible={spinner}
+        textContent={'Login...'}
+        // textStyle={styles.spinnerTextStyle}
+      />
+      <KeyboardAwareScrollView>
         <View style={styles.topLogo}>
-          <Image source={require('../assets/images/Logo(2).png')} />
+          <Image source={require('../../assets/images/Logo(2).png')} />
           <Text style={styles.topLogoTitle} text="Tongkrongan Programmer" />
         </View>
 
@@ -59,15 +55,15 @@ function RegisterScreen(props) {
           <Text
             style={styles.greatingSmall}
             weight="Regular"
-            text="Silahkan Mendaftar"
+            text="Silahkan Masuk untuk melanjutkan"
           />
 
           <View style={styles.inputContainer}>
             <Text text="Username" style={styles.inputLabel} weight="Light" />
             <TextInput
               style={styles.textInput}
-              placeholder="Masukkan username"
-              value={username}
+              placeholder="Masukkan Email"
+              defaultValue={username}
               onChange={value => setUsername(value.nativeEvent.text)}
               autoCapitalize="none"
             />
@@ -75,29 +71,19 @@ function RegisterScreen(props) {
               size={11}
               weight="Medium"
               style={[
-                {display: usernameNull ? 'flex' : 'none'},
+                {display: isFailed ? 'flex' : 'none'},
                 styles.failedText,
               ]}>
-              * Username harus di isi
+              *Username atau password salah
             </Text>
-          </View>
-          <View style={styles.inputContainer}>
-            <Text text="Email" style={styles.inputLabel} weight="Light" />
-            <TextInput
-              style={styles.textInput}
-              placeholder="Masukkan Email"
-              value={email}
-              onChange={value => setEmail(value.nativeEvent.text)}
-              autoCapitalize="none"
-            />
             <Text
               size={11}
               weight="Medium"
               style={[
-                {display: emailNull ? 'flex' : 'none'},
+                {display: usernameNull ? 'none' : 'flex'},
                 styles.failedText,
               ]}>
-              * Email harus di isi
+              *Username harus di isi!
             </Text>
           </View>
           <View style={styles.inputContainer}>
@@ -105,7 +91,7 @@ function RegisterScreen(props) {
             <TextInput
               style={styles.textInput}
               placeholder="Masukkan password"
-              value={password}
+              defaultValue={password}
               onChange={value => setPassword(value.nativeEvent.text)}
               autoCapitalize="none"
               autoCompleteType="password"
@@ -115,35 +101,10 @@ function RegisterScreen(props) {
               size={11}
               weight="Medium"
               style={[
-                {display: passwordNull ? 'flex' : 'none'},
+                {display: passwordNull ? 'none' : 'flex'},
                 styles.failedText,
               ]}>
-              * Password harus di isi
-            </Text>
-          </View>
-          <View style={styles.inputContainer}>
-            <Text
-              text="Masukan ulang password"
-              style={styles.inputLabel}
-              weight="Light"
-            />
-            <TextInput
-              style={[styles.textInput, samePassword ? {} : {color: 'red'}]}
-              placeholder="Masukkan ulang password"
-              value={password2}
-              onChange={value => setPassword2(value.nativeEvent.text)}
-              autoCapitalize="none"
-              autoCompleteType="password"
-              secureTextEntry={true}
-            />
-            <Text
-              size={11}
-              weight="Medium"
-              style={[
-                {display: samePassword ? 'none' : 'flex'},
-                styles.failedText,
-              ]}>
-              *Password tidak sama!
+              *Password harus di isi!
             </Text>
           </View>
           <TouchableOpacity
@@ -152,7 +113,7 @@ function RegisterScreen(props) {
             onPress={() => {
               onClick();
             }}>
-            <Text text="Daftar" color="white" />
+            <Text text="Masuk" color="white" />
           </TouchableOpacity>
           <Text text="Atau" size={12} style={styles.atau} />
           <TouchableOpacity
@@ -162,48 +123,50 @@ function RegisterScreen(props) {
               onClick(true);
             }}>
             <ImageLogo
-              file={require('../assets/images/google-original.png')}
+              file={require('../../assets/images/google-original.png')}
               size={24}
               margin={10}
             />
             <Text text="Masuk dengan Google" />
           </TouchableOpacity>
 
-          <Text text="Sudah punya akun?" size={12} />
+          <Text text="Belum punya akun?" size={12} />
 
           <TouchableOpacity
             style={[styles.inputSubmit, styles.inputSubmitGoogle]}
             activeOpacity={0.8}
             onPress={() => {
-              navigation.push('Login');
+              navigation.push('Register');
             }}>
-            <Text text="Masuk" />
+            <Text text="Buat akun" />
           </TouchableOpacity>
         </View>
       </KeyboardAwareScrollView>
     </View>
   );
 }
-const mapStateToProps = state => ({
-  username: state.authReducer.username,
-  password: state.password,
-  email: state.email,
-});
+const mapStateToProps = state => {
+  return {
+    isFailed: state.authReducer.loginFailed,
+  };
+};
+
 const mapDispatchToProps = dispatch => ({
-  registerFunc: data => dispatch(register(data)),
+  loginFunc: data => dispatch(login(data)),
   loginGoogle: () => dispatch(loginWithGoogle()),
 });
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RegisterScreen);
+)(LoginScreen);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   topLogo: {
-    marginVertical: 10,
+    marginVertical: 40,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -214,7 +177,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   formLogin: {
-    flex: 3.5,
+    flex: 2,
     color: '#424242',
     paddingHorizontal: 30,
   },

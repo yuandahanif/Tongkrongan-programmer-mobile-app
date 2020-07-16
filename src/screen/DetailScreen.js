@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-  ImageBackground,
   Image,
   Dimensions,
 } from 'react-native';
