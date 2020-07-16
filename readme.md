@@ -2,7 +2,7 @@
 
 Aplikasi untuk show-off project dan skill para programmer di indonesia.
 
-[Link Figma](https://www.figma.com/file/ulLwQfXkM9mPSMdzwKIpdA/Tongkrongan-programmer-v3?node-id=0%3A1)
+[Link disain UI di Figma](https://www.figma.com/file/ulLwQfXkM9mPSMdzwKIpdA/Tongkrongan-programmer-v3?node-id=0%3A1)
 
 ## Di buat menggunakan
 - [Neact Native](https://reactnative.dev/)
@@ -32,12 +32,15 @@ Aplikasi untuk show-off project dan skill para programmer di indonesia.
 - Selesai membuat skema Database untuk User.
 - Halaman AboutMe menampilkan informasi User yang sedang Login.
 
+##### 16 juli 2020 :
+- Persist Login Credentials (di branch redesign_AboutMeScreen).
+
 ## Kekurangan
 #### Alpha
 
  - ~~data registrasi disimpan di penyimpanan lokal.~~
 -  ~~hanya bisa menyimpan 1 data registrasi.~~
-- ~~tulisan "Selamat pagi, Yuanda Hanif" pada halaman Home masih bersifat statis.~~
+- tulisan "Selamat pagi, Yuanda Hanif" pada halaman Home masih bersifat statis.
 - login dengan google belum berfungsi.
 - belum ada error handling untuk gagal load gambar pada internet lambat.
 - ~~login setelah logout langsung mengarah ke halaman AboutMe~~
