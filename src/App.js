@@ -33,7 +33,6 @@ const userStack = createStackNavigator();
 const userStackScreen = () => (
   <userStack.Navigator headerMode="none">
     <userStack.Screen name="abouteMe" component={AbouteMeScreen} />
-    <userStack.Screen name="updateProfile" component={updateProfile} />
   </userStack.Navigator>
 );
 
@@ -49,7 +48,7 @@ const AuthStackScreen = () => (
 const Tab = createBottomTabNavigator();
 const TabScreen = () => (
   <Tab.Navigator
-    headerMode="none"
+    // headerMode="none"
     tabBar={props => <TabBar {...props} />}
     initialRouteName="Home">
     <Tab.Screen
@@ -100,9 +99,17 @@ function App(props) {
     });
   }, []);
 
+  const NoTabStack = createStackNavigator();
+  const ScreenContainer = () => (
+    <NoTabStack.Navigator headerMode="none">
+      <NoTabStack.Screen name="Tab" component={TabScreen} />
+      <NoTabStack.Screen name="updateProfile" component={updateProfile} />
+    </NoTabStack.Navigator>
+  )
+
   return (
     <NavigationContainer>
-      {isAuth ? <TabScreen /> : <AuthStackScreen />}
+      {isAuth ? <ScreenContainer /> : <AuthStackScreen />}
     </NavigationContainer>
   );
 }

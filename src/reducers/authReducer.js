@@ -24,7 +24,6 @@ export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
       const data = action.payload;
-      console.log('frome reducer');
 
       return {
         ...data,
