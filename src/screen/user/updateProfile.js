@@ -9,16 +9,26 @@ import {
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import Ficon from 'react-native-vector-icons/Feather';
+import SkillList from '../../components/SkillList';
 import Text from '../../components/Text';
+
 const DEVICE = Dimensions.get('window');
 
+import skillData from '../../data/skillData.json';
 import dataSociall from '../../data/socialData.json';
 
 export default function updateProfile({navigation}) {
   const goBack = () => {
     navigation.goBack();
   };
+
+  const languageSkill = skillData.items.filter(v => v.category === 'Language');
+  const LibrarySkill = skillData.items.filter(v => v.category === 'Library');
+  const TechnologySkill = skillData.items.filter(
+    v => v.category === 'Technology',
+  );
+
   const [name, setName] = useState('yuanda');
   const [enableEditName, setEnableEditName] = useState(true);
   const nameEdit = useRef(null);
@@ -34,7 +44,9 @@ export default function updateProfile({navigation}) {
           <Icon name="chevron-left" size={28} />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.imageContainer}>
           <Image
             style={styles.imageProfile}
@@ -62,7 +74,8 @@ export default function updateProfile({navigation}) {
                 dataSociall.map(data => (
                   <TouchableOpacity
                     onPressIn={() => {
-                      openLink(data.account);
+                      // openLink(data.account);
+                      alert('clicked');
                     }}
                     key={data.iName}>
                     <Icon name={data.iName} size={32} color={data.color} />
@@ -114,9 +127,10 @@ export default function updateProfile({navigation}) {
                 </TouchableOpacity>
               </View>
             </View>
-            <TouchableOpacity
-            style={styles.expandInternButton}>
-              <Text weight="Regular" size={12}>Tampilkan 7 lainnya</Text>
+            <TouchableOpacity style={styles.expandInternButton}>
+              <Text weight="Regular" size={12}>
+                Tampilkan 7 lainnya
+              </Text>
             </TouchableOpacity>
           </View>
           {/* Bekerja */}
@@ -162,15 +176,27 @@ export default function updateProfile({navigation}) {
                 </TouchableOpacity>
               </View>
             </View>
-            <TouchableOpacity
-            style={styles.expandInternButton}>
-              <Text weight="Regular" size={12}>Tampilkan 7 lainnya</Text>
+            <TouchableOpacity style={styles.expandInternButton}>
+              <Text weight="Regular" size={12}>
+                Tampilkan 7 lainnya
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View>{/* skill */}</View>
+        <View>
+          <SkillList title="Bahasa Pemrograman" skillData={languageSkill} />
+          <SkillList title="Framework / Library" skillData={LibrarySkill} />
+          <SkillList title="Teknologi" skillData={TechnologySkill} />
+        </View>
       </ScrollView>
-      <View>{/* save */}</View>
+      <View style={styles.bottomTabContainer}>
+        <TouchableOpacity style={styles.bottomTabButton}>
+          <Ficon name="save" color="white" size={18} />
+          <Text style={styles.textSave} weight="Regular">
+            Simpan
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -263,5 +289,34 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 5,
     marginBottom: 20,
+  },
+  bottomTabContainer: {
+    height: DEVICE.height * 0.08,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
+  },
+  bottomTabButton: {
+    flexDirection: 'row',
+    backgroundColor: '#0095F6',
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  textSave: {
+    marginLeft: 5,
+    color: 'white',
+    fontSize: 16,
   },
 });

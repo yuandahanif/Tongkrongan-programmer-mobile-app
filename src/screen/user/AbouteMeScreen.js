@@ -16,6 +16,7 @@ import {logout} from '../../actions/authAction';
 
 import Text from '../../components/Text';
 import SkillList from '../../components/SkillList';
+
 import skillData from '../../data/skillData.json';
 import dataSociall from '../../data/socialData.json';
 
