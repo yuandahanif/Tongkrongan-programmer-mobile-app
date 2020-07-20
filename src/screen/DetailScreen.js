@@ -8,6 +8,7 @@ import {
   PostAuthor as Author,
   PostAuthorSkeleton as AuthorSkeleton,
 } from '../components/PostAuthor';
+import BackHeader from '../components/BackHeader';
 import {getArticleDetail} from '../actions/articleAction';
 
 import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
@@ -21,17 +22,10 @@ function DetailScreen(props) {
   useEffect(() => {
     articleDetail(route.params.index);
   }, []);
-  const goBack = () => {
-    navigation.goBack();
-  };
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.top}>
-          <TouchableOpacity onPress={() => goBack()}>
-            <Icon name="chevron-left" size={28} />
-          </TouchableOpacity>
-        </View>
+    <View style={styles.container}>
+      <BackHeader navigation={navigation} />
+      <ScrollView style={styles.scrollContainer}>
         <View style={{paddingHorizontal: 20, paddingTop: 10}}>
           <Text size={18} style={styles.articleTitle}>
             {name}
@@ -69,12 +63,23 @@ function DetailScreen(props) {
               metus porttitor. Morbi semper nisi quis erat commodo pulvinar.
               Praesent id suscipit ex. Maecenas finibus vulputate eros et
               mattis. Aenean pretium ornare massa. Duis nec sem mauris. Proin
-              pharetra pharetra tellus in ornare.
+              pharetra pharetra tellus in ornare. Lorem ipsum dolor sit amet,
+              consectetur adipiscing elit. Proin id auctor ante. Phasellus
+              semper, diam vel consectetur venenatis, dui urna elementum libero,
+              in malesuada turpis turpis vel turpis. Aenean sagittis auctor
+              tellus id eleifend. Aenean tincidunt sollicitudin ipsum,
+              ullamcorper feugiat nisi congue non. Nam maximus faucibus urna.
+              Fusce scelerisque justo non diam interdum rhoncus. Fusce
+              consectetur erat vel metus tincidunt, a pretium metus porttitor.
+              Morbi semper nisi quis erat commodo pulvinar. Praesent id suscipit
+              ex. Maecenas finibus vulputate eros et mattis. Aenean pretium
+              ornare massa. Duis nec sem mauris. Proin pharetra pharetra tellus
+              in ornare.
             </Text>
           </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 const mapsStateToProps = state => ({
@@ -91,25 +96,11 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    // backgroundColor: 'cyan',
+    // justifyContent: 'flex-start',
+    position: 'relative',
   },
-  top: {
-    height: DEVICE.height * 0.08,
-    flex: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    // paddingTop: 30,
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
+  scrollContainer: {
+    paddingTop: 75,
   },
   articleContainer: {
     flex: 1,
