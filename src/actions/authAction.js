@@ -8,24 +8,10 @@ import {
 } from './Types';
 import AsyncStorage from '@react-native-community/async-storage';
 import {firebase} from '../firebase/config';
-firebase.firestore().settings({ experimentalForceLongPolling: true });
+firebase.firestore().settings({experimentalForceLongPolling: true});
 
 export const login = payload => {
   return dispatch => {
-    // AsyncStorage.getItem('@auth')
-    //   .then(value => {
-    //     if (value !== null) {
-    //       value = JSON.parse(value);
-    //       if (username === value.username && password === value.password) {
-    //         dispatch(loginSuccess(value));
-    //       } else {
-    //         // ! if login failed
-    //         dispatch(loginFailed());
-    //       }
-    //     }
-    //   })
-    //   .catch(e => dispatch(loginFailed()));
-
     const {email, password, googleAuth} = payload;
     firebase
       .auth()
@@ -45,32 +31,27 @@ export const login = payload => {
           })
           .catch(e => {
             alert(e);
-            console.log('error in loginAction',e);
+            console.log('error in loginAction', e);
           });
       });
   };
 };
 
-const loginSuccess = value => ({
-  type: LOGIN,
-  payload: {
-    ...value,
-  },
-});
+export const loginSuccess = value => {
+  return {
+    type: LOGIN,
+    payload: {
+      ...value,
+    },
+  };
+};
 const loginFailed = () => ({
   type: LOGIN_FAILED,
 });
 
 export const register = payload => {
   return dispatch => {
-    // const jsonValue = JSON.stringify(payload);
-    // AsyncStorage.setItem('@auth', jsonValue)
-    //   .then(() => {
-    //     dispatch(registerSuccess(payload));
-    //   })
-    //   .catch(() => dispatch(loginFailed()));
     const {username, email, password} = payload;
-
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -106,7 +87,7 @@ export const register = payload => {
       })
       .catch(e => {
         alert(e);
-        console.log('error in regisAction',e);
+        console.log('error in regisAction', e);
       });
   };
 };
@@ -123,18 +104,8 @@ export const loginWithGoogle = () => ({
 
 export const logout = () => ({type: LOGOUT});
 
-export const checkAuth = () => {
-  return async dispatch => {
-    try {
-      const value = await AsyncStorage.getItem('@isAuth');
-      if (value !== null) {
-        dispatch(() => ({
-          type: CHECK_AUTH,
-        }));
-      }
-      return;
-    } catch (e) {
-      console.warn(e);
-    }
+export const checkAuth = payload => {
+  return dispatch => {
+    dispatch(loginSuccess(payload));
   };
 };

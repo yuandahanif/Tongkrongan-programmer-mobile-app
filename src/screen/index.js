@@ -1,11 +1,12 @@
-import AbouteMeScreen from './AbouteMeScreen';
+import AbouteMeScreen from './user/AbouteMeScreen';
 import AddProjectScreen from './AddScreen';
-import LoginScreen from './LoginScreen';
+import LoginScreen from './auth/LoginScreen';
 import ProjectScreen from './ProjectScreen';
 import SkillScreen from './SkillScreen';
 import SearchScreen from './SearchScreen';
-import RegisterScreen from './RegisterScreen'
-import DetailScreen from './DetailScreen'
+import RegisterScreen from './auth/RegisterScreen';
+import DetailScreen from './DetailScreen';
+import updateProfile from './user/updateProfile';
 
 export {
   AbouteMeScreen,
@@ -16,4 +17,5 @@ export {
   SearchScreen,
   RegisterScreen,
   DetailScreen,
+  updateProfile,
 };

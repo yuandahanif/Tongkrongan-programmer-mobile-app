@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,16 +7,18 @@ import {
   Modal,
   TouchableHighlight,
   Linking,
+  Dimensions,
 } from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
 import {connect} from 'react-redux';
-import {logout} from '../actions/authAction';
+import {logout} from '../../actions/authAction';
 
-import Text from '../components/Text';
-import SkillList from '../components/SkillList';
-import skillData from '../data/skillData.json';
-import dataSociall from '../data/socialData.json';
+import Text from '../../components/Text';
+import SkillList from '../../components/SkillList';
+
+import skillData from '../../data/skillData.json';
+import dataSociall from '../../data/socialData.json';
 
 const languageSkill = skillData.items.filter(v => v.category === 'Language');
 const LibrarySkill = skillData.items.filter(v => v.category === 'Library');
@@ -26,6 +28,7 @@ const TechnologySkill = skillData.items.filter(
 
 const AbouteMeScreen = props => {
   const {user, navigation, logoutFunc} = props;
+  const DEVICE = Dimensions.get('window');
   const {
     username,
     avatar_url,
@@ -53,16 +56,21 @@ const AbouteMeScreen = props => {
     months_arr[date.getMonth()]
   } ${date.getFullYear()}`;
 
-  let id = 1;
   const [modalVisible, setModalVisible] = useState(false);
-  
+
   const logoutClick = () => {
     navigation.reset({
       index: 0,
       routes: [{name: 'Home'}],
     });
+    setModalVisible(!modalVisible);
     logoutFunc();
   };
+
+  const editProfileClick = () => {
+    setModalVisible(!modalVisible);
+    navigation.push('updateProfile');
+  }
 
   const openLink = async url => {
     const supported = await Linking.canOpenURL(url);
@@ -75,7 +83,7 @@ const AbouteMeScreen = props => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Modal
         animationType="fade"
         transparent={true}
@@ -87,10 +95,14 @@ const AbouteMeScreen = props => {
           <View style={styles.modalView}>
             <TouchableHighlight
               style={{...styles.modalButton}}
+              onPress={editProfileClick}>
+              <Text style={styles.textStyle}>Edit profil</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{...styles.modalButton}}
               onPress={logoutClick}>
               <Text style={styles.textStyle}>Logout</Text>
             </TouchableHighlight>
-
             <TouchableHighlight
               style={{...styles.modalButton}}
               onPress={() => {
@@ -101,7 +113,8 @@ const AbouteMeScreen = props => {
           </View>
         </View>
       </Modal>
-      <View style={styles.bar}>
+
+      <View style={[styles.bar, {height: DEVICE.height * 0.2}]}>
         <Text
           lineBreak={1}
           text={username}
@@ -120,7 +133,7 @@ const AbouteMeScreen = props => {
       <View style={styles.profileInfo}>
         <Image
           style={styles.profileInfoImage}
-          defaultSource={require('../assets/images/ui-avatars.com.png')}
+          defaultSource={require('../../assets/images/ui-avatars.com.png')}
           source={{uri: avatar_url}}
         />
         <View style={styles.profileInfoSocial}>
@@ -128,24 +141,16 @@ const AbouteMeScreen = props => {
             Terhubung
           </Text>
           <View style={styles.listSocial}>
-            <FlatList
-              contentContainerStyle={styles.listSocial}
-              data={dataSociall}
-              renderItem={data => (
+            {dataSociall &&
+              dataSociall.map(data => (
                 <TouchableOpacity
                   onPressIn={() => {
-                    openLink(data.item.account);
-                  }}>
-                  <Icon
-                    name={data.item.iName}
-                    size={24}
-                    color={data.item.color}
-                  />
+                    openLink(data.account);
+                  }}
+                  key={data.iName}>
+                  <Icon name={data.iName} size={24} color={data.color} />
                 </TouchableOpacity>
-              )}
-              keyExtractor={data => data.iName}
-              horizontal={true}
-            />
+              ))}
           </View>
         </View>
       </View>
@@ -196,21 +201,11 @@ const AbouteMeScreen = props => {
         <Text size={18} style={styles.subTitle}>
           Skill
         </Text>
-        <FlatList
-          data={[
-            () => (
-              <SkillList title="Bahasa Pemrograman" skillData={languageSkill} />
-            ),
-            () => (
-              <SkillList title="Framework / Library" skillData={LibrarySkill} />
-            ),
-            () => <SkillList title="Teknologi" skillData={TechnologySkill} />,
-          ]}
-          renderItem={data => <data.item />}
-          keyExtractor={() => (id += 1).toString()}
-        />
+        <SkillList title="Bahasa Pemrograman" skillData={languageSkill} />
+        <SkillList title="Framework / Library" skillData={LibrarySkill} />
+        <SkillList title="Teknologi" skillData={TechnologySkill} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 const mapStateToProps = state => ({

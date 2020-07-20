@@ -1,11 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  View,
-  ImageBackground,
-  Image,
-  Dimensions,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, View, Image, Dimensions} from 'react-native';
 import {connect} from 'react-redux';
 
 import Text from '../components/Text';
@@ -16,29 +10,25 @@ import {
 } from '../components/PostAuthor';
 import {getArticleDetail} from '../actions/articleAction';
 
-import {
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native-gesture-handler';
+import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';
+const DEVICE = Dimensions.get('window');
 
 function DetailScreen(props) {
-  const DEVICE = Dimensions.get('window');
   const {navigation, articleDetail, route, article} = props;
-  const {description,name, owner = {}} = article;
+  const {description, name, owner = {}} = article;
   const {avatar_url, login} = owner;
-    useEffect(() => {
-      articleDetail(route.params.index);
-    }, []);
+  useEffect(() => {
+    articleDetail(route.params.index);
+  }, []);
   const goBack = () => {
-        navigation.goBack();
-  }
+    navigation.goBack();
+  };
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.top}>
-          <TouchableOpacity
-          onPress={() => goBack()}>
+          <TouchableOpacity onPress={() => goBack()}>
             <Icon name="chevron-left" size={28} />
           </TouchableOpacity>
         </View>
@@ -105,10 +95,21 @@ const styles = StyleSheet.create({
     // backgroundColor: 'cyan',
   },
   top: {
+    height: DEVICE.height * 0.08,
     flex: 1,
+    backgroundColor: 'white',
     paddingHorizontal: 20,
-    paddingTop: 30,
-    justifyContent: 'flex-end',
+    // paddingTop: 30,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   articleContainer: {
     flex: 1,
