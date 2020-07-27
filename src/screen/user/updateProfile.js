@@ -19,15 +19,15 @@ import skillData from '../../data/skillData.json';
 import dataSociall from '../../data/socialData.json';
 
 export default function updateProfile({navigation}) {
-  const goBack = () => {
-    navigation.goBack();
-  };
-
   const languageSkill = skillData.items.filter(v => v.category === 'Language');
   const LibrarySkill = skillData.items.filter(v => v.category === 'Library');
   const TechnologySkill = skillData.items.filter(
     v => v.category === 'Technology',
   );
+
+  const gotoEditIntern = (id = 0) => {
+    navigation.push('UpdateIntern');
+  };
 
   const [name, setName] = useState('yuanda');
   const [enableEditName, setEnableEditName] = useState(true);
@@ -39,11 +39,6 @@ export default function updateProfile({navigation}) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <TouchableOpacity onPress={() => goBack()}>
-          <Icon name="chevron-left" size={28} />
-        </TouchableOpacity>
-      </View>
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
@@ -106,7 +101,7 @@ export default function updateProfile({navigation}) {
                 </Text>
               </View>
               <View style={styles.internRight}>
-                <TouchableOpacity onPress={null}>
+                <TouchableOpacity onPress={gotoEditIntern}>
                   <Icon name="pencil-outline" size={22} color="#666666" />
                 </TouchableOpacity>
               </View>
@@ -205,20 +200,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     position: 'relative',
-  },
-  top: {
-    backgroundColor: 'white',
-    height: DEVICE.height * 0.08,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   scrollContainer: {
     flex: 1,

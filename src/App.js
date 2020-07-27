@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -19,6 +20,7 @@ import {
   DetailScreen,
   updateProfile,
   SplashScreen,
+  UpdateInternship,
 } from './screen/index';
 
 // * SCREEN
@@ -26,22 +28,24 @@ const skillStack = createStackNavigator();
 const skillStackScreen = () => (
   <skillStack.Navigator initialRouteName="home">
     <skillStack.Screen
-      name="home"
+      name="Home"
       options={{headerShown: false}}
       component={SkillScreen}
     />
     <skillStack.Screen
-      name="detail"
+      name="Detail"
       options={{headerShown: true}}
       component={DetailScreen}
     />
     <skillStack.Screen
-      name="userInfo"
+      name="UserInfo"
       options={{headerShown: false}}
       component={AbouteMeScreen}
     />
   </skillStack.Navigator>
 );
+
+// * user
 const userStack = createStackNavigator();
 const userStackScreen = () => (
   <userStack.Navigator headerMode="none">
@@ -49,12 +53,22 @@ const userStackScreen = () => (
   </userStack.Navigator>
 );
 
+// * login/logout
 const AuthStack = createStackNavigator();
 const AuthStackScreen = () => (
   <AuthStack.Navigator headerMode="none" initialRouteName="Login">
     <AuthStack.Screen name="Login" component={LoginScreen} />
     <AuthStack.Screen name="Register" component={RegisterScreen} />
   </AuthStack.Navigator>
+);
+
+// * userSetting
+const UserSettingStack = createStackNavigator();
+const UserSetting = () => (
+  <UserSettingStack.Navigator>
+    <UserSettingStack.Screen name="UpdateProfile" component={updateProfile} />
+    <UserSettingStack.Screen name="UpdateIntern" component={UpdateInternship} />
+  </UserSettingStack.Navigator>
 );
 
 // * BOTTOM TAB
@@ -92,6 +106,24 @@ const TabScreen = () => (
   </Tab.Navigator>
 );
 
+const NoTabStack = createStackNavigator();
+const ScreenContainer = () => (
+  <NoTabStack.Navigator>
+    <NoTabStack.Screen
+      name="Tab"
+      options={{headerShown: false}}
+      component={TabScreen}
+    />
+    <NoTabStack.Screen
+      name="updateProfile"
+      options={{title: 'Ubah Profil'}}
+      component={UserSetting}
+    />
+  </NoTabStack.Navigator>
+);
+
+
+// !!!!!  App
 function App(props) {
   const {isAuth, loginFunc} = props;
   const [splash, setSplash] = useState(true);
@@ -111,27 +143,18 @@ function App(props) {
           .catch(e => {
             console.warn('from app.js login', e);
           });
+      } else {
+        setSplash(false);
       }
     });
   }, []);
 
+  // * toggle splashScreen
   useEffect(() => {
     if (isAuth !== null) {
       setSplash(false);
     }
   }, [isAuth]);
-
-  const NoTabStack = createStackNavigator();
-  const ScreenContainer = () => (
-    <NoTabStack.Navigator>
-      <NoTabStack.Screen
-        name="Tab"
-        options={{headerShown: false}}
-        component={TabScreen}
-      />
-      <NoTabStack.Screen name="updateProfile" component={updateProfile} />
-    </NoTabStack.Navigator>
-  );
 
   return (
     <NavigationContainer>

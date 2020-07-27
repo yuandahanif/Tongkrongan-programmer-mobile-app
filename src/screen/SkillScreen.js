@@ -27,12 +27,12 @@ function SkillScreen(props) {
   }, []);
 
   const goToDetail = index => {
-    navigation.push('detail', {index});
+    navigation.push('Detail', {index});
   };
 
-  const goToUserInfo = (index) => {
-    navigation.push('userInfo', {index});
-  }
+  const goToUserInfo = index => {
+    navigation.push('UserInfo', {index});
+  };
 
   return (
     <FlatList

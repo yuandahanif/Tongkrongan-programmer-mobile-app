@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   Linking,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Feather';

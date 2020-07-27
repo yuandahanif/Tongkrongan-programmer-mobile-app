@@ -8,6 +8,7 @@ import RegisterScreen from './auth/RegisterScreen';
 import DetailScreen from './DetailScreen';
 import updateProfile from './user/updateProfile';
 import SplashScreen from './system/SplashScreen';
+import UpdateInternship from './user/UpdateInternship';
 
 export {
   AbouteMeScreen,
@@ -20,4 +21,5 @@ export {
   DetailScreen,
   updateProfile,
   SplashScreen,
+  UpdateInternship,
 };

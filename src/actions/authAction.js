@@ -102,7 +102,20 @@ export const loginWithGoogle = () => ({
   type: LOGIN_WITH_GOOGLE,
 });
 
-export const logout = () => ({type: LOGOUT});
+export const logout = () => {
+  return dispatch => {
+    firebase
+      .auth()
+      .signOut()
+      .then(function() {
+        dispatch({type: LOGOUT});
+      })
+      .catch(function(error) {
+        // An error happened.
+        console.log('error on authAction.js logout', error);
+      });
+  };
+};
 
 export const checkAuth = payload => {
   return dispatch => {

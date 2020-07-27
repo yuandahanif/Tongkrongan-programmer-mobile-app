@@ -1,23 +1,45 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
+import Text from '../../components/Text';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ficon from 'react-native-vector-icons/Feather';
+import {ScrollView, TextInput} from 'react-native-gesture-handler';
 
 const DEVICE = Dimensions.get('window');
 export default function UpdateInternship() {
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <TouchableOpacity onPress={() => goBack()}>
-          <Icon name="chevron-left" size={28} />
-        </TouchableOpacity>
-      </View>
+      <ScrollView style={styles.scrollHandler}>
+        <View style={styles.top}>
+          <Text weight="Medium" style={styles.topTitle}>
+            Magang
+          </Text>
+          <TouchableOpacity style={styles.deleteButton}>
+            <Ficon name="trash-2" color="red" />
+            <Text weight="Regular" style={styles.deleteText}>
+              Hapus
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.formInputTextContainer}>
+          <Text style={styles.formLabel}>Judul</Text>
+          <TextInput
+            style={styles.formTextInput}
+            underlineColorAndroid="transparent"
+            placeholder={'Posisi'}
+          />
+        </View>
+        {/* TODO: nanti di buat component */}
+        <View style={styles.formInputTextContainer}>
+          <Text style={styles.formLabel}>Judul</Text>
+          <TextInput
+            style={styles.formTextInput}
+            underlineColorAndroid="transparent"
+            placeholder={'Posisi'}
+          />
+        </View>
+      </ScrollView>
       <View style={styles.bottomTabContainer}>
         <TouchableOpacity style={styles.bottomTabButton}>
           <Ficon name="save" color="white" size={18} />
@@ -34,17 +56,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  top: {
-    backgroundColor: 'white',
-    height: DEVICE.height * 0.08,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+  scrollHandler: {
+    flex: 1,
+    marginHorizontal: 30,
+    paddingVertical: 10,
   },
+  top: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  topTitle: {
+    fontSize: 24,
+  },
+  deleteButton: {flexDirection: 'row', alignItems: 'center'},
+  deleteText: {color: 'red', marginLeft: 3},
+  // form
+  formInputTextContainer: {
+    marginTop: 10,
+  },
+  formLabel: {
+    marginLeft: 5,
+  },
+  formTextInput: {
+    width: '100%',
+    borderColor: 'black',
+    borderWidth: 1,
+    marginTop: 5,
+    borderRadius: 3,
+  },
+  // form end
   bottomTabContainer: {
     height: DEVICE.height * 0.08,
     justifyContent: 'center',

@@ -12,7 +12,6 @@ import {
   PostAuthor as Author,
   PostAuthorSkeleton as AuthorSkeleton,
 } from '../components/PostAuthor';
-import BackHeader from '../components/BackHeader';
 import {getArticleDetail} from '../actions/articleAction';
 
 function DetailScreen(props) {
@@ -24,7 +23,6 @@ function DetailScreen(props) {
   }, []);
   return (
     <View style={styles.container}>
-      <BackHeader navigation={navigation} />
       <ScrollView style={styles.scrollContainer}>
         <View style={{paddingHorizontal: 20, paddingTop: 10}}>
           <Text size={18} style={styles.articleTitle}>
@@ -100,7 +98,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   scrollContainer: {
-    paddingTop: 75,
+    paddingTop: 10,
   },
   articleContainer: {
     flex: 1,
