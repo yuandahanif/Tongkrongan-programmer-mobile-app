@@ -7,6 +7,7 @@ import SearchScreen from './SearchScreen';
 import RegisterScreen from './auth/RegisterScreen';
 import DetailScreen from './DetailScreen';
 import updateProfile from './user/updateProfile';
+import SplashScreen from './system/SplashScreen';
 
 export {
   AbouteMeScreen,
@@ -18,4 +19,5 @@ export {
   RegisterScreen,
   DetailScreen,
   updateProfile,
+  SplashScreen,
 };

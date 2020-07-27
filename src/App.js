@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -18,15 +18,28 @@ import {
   RegisterScreen,
   DetailScreen,
   updateProfile,
+  SplashScreen,
 } from './screen/index';
 
 // * SCREEN
 const skillStack = createStackNavigator();
 const skillStackScreen = () => (
-  <skillStack.Navigator initialRouteName="home" headerMode="none">
-    <skillStack.Screen name="home" component={SkillScreen} />
-    <skillStack.Screen name="detail" component={DetailScreen} />
-    <skillStack.Screen name="userInfo" component={AbouteMeScreen} />
+  <skillStack.Navigator initialRouteName="home">
+    <skillStack.Screen
+      name="home"
+      options={{headerShown: false}}
+      component={SkillScreen}
+    />
+    <skillStack.Screen
+      name="detail"
+      options={{headerShown: true}}
+      component={DetailScreen}
+    />
+    <skillStack.Screen
+      name="userInfo"
+      options={{headerShown: false}}
+      component={AbouteMeScreen}
+    />
   </skillStack.Navigator>
 );
 const userStack = createStackNavigator();
@@ -81,6 +94,9 @@ const TabScreen = () => (
 
 function App(props) {
   const {isAuth, loginFunc} = props;
+  const [splash, setSplash] = useState(true);
+
+  // * check auth
   useEffect(() => {
     const userRef = firebase.firestore().collection('users');
     firebase.auth().onAuthStateChanged(user => {
@@ -99,17 +115,33 @@ function App(props) {
     });
   }, []);
 
+  useEffect(() => {
+    if (isAuth !== null) {
+      setSplash(false);
+    }
+  }, [isAuth]);
+
   const NoTabStack = createStackNavigator();
   const ScreenContainer = () => (
-    <NoTabStack.Navigator headerMode="none">
-      <NoTabStack.Screen name="Tab" component={TabScreen} />
+    <NoTabStack.Navigator>
+      <NoTabStack.Screen
+        name="Tab"
+        options={{headerShown: false}}
+        component={TabScreen}
+      />
       <NoTabStack.Screen name="updateProfile" component={updateProfile} />
     </NoTabStack.Navigator>
-  )
+  );
 
   return (
     <NavigationContainer>
-      {isAuth ? <ScreenContainer /> : <AuthStackScreen />}
+      {splash ? (
+        <SplashScreen />
+      ) : isAuth ? (
+        <ScreenContainer />
+      ) : (
+        <AuthStackScreen />
+      )}
     </NavigationContainer>
   );
 }

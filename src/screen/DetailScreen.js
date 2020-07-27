@@ -1,6 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect} from 'react';
-import {StyleSheet, View, Image, Dimensions} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import {connect} from 'react-redux';
+import Animated from 'react-native-reanimated';
+import {ScrollView} from 'react-native-gesture-handler';
 
 import Text from '../components/Text';
 import SkillTagList from '../components/SkillTagList';
@@ -10,10 +14,6 @@ import {
 } from '../components/PostAuthor';
 import BackHeader from '../components/BackHeader';
 import {getArticleDetail} from '../actions/articleAction';
-
-import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Feather';
-const DEVICE = Dimensions.get('window');
 
 function DetailScreen(props) {
   const {navigation, articleDetail, route, article} = props;
